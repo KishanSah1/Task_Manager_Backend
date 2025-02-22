@@ -11,7 +11,7 @@ export class AuthService {
   ) {}
 
   // Signup method to register a new user
-  async signup(email: string, password: string, fullName: string) {
+  async signup(email: string, password: string, username: string) {
     // Check if the user already exists
     const existingUser = await this.userService.findUserByEmail(email);
     if (existingUser) {
@@ -23,7 +23,7 @@ export class AuthService {
     const newUser = await this.userService.createUser(
       email,
       password,
-      fullName,
+      username,
     );
 
     // Generate JWT token

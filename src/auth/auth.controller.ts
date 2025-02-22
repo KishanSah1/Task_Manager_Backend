@@ -9,9 +9,9 @@ export class AuthController {
   signup(
     @Body('email') email: string,
     @Body('password') password: string,
-    @Body('fullName') fullName: string,
+    @Body('username') username: string,
   ) {
-    return this.authService.signup(email, password, fullName);
+    return this.authService.signup(email, password, username);
   }
 
   @Post('login')
