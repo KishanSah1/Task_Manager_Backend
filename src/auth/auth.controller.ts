@@ -1,9 +1,19 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, HttpException, HttpStatus, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('validate')
+  async validateToken(@Headers('authorization') authHeader: string) {
+    if (!authHeader) {
+      throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
+    }
+
+    const token = authHeader.split(' ')[1]; // Remove 'Bearer ' prefix
+    return this.authService.validateToken(token);
+  }
 
   @Post('signup')
   signup(

@@ -10,6 +10,30 @@ export class AuthService {
     private jwtService: JwtService, // Inject JwtService for JWT generation
   ) {}
 
+  async validateToken(token: string) {
+    try {
+      // Verify and decode the token
+      const decoded = this.jwtService.verify(token);
+
+      // Get user from database using decoded userId
+      const user = await this.userService.findUserById(decoded.userId);
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Return user data without sensitive information
+      return {
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+        },
+      };
+    } catch (error) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
   // Signup method to register a new user
   async signup(email: string, password: string, username: string) {
     // Check if the user already exists
