@@ -8,6 +8,7 @@ async function bootstrap() {
     origin: '*', // Allow all origins (for testing)
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies & auth headers
+    allowedHeaders: 'Content-Type, Authorization',
   });
   await app.listen(process.env.PORT ?? 3000);
 }
